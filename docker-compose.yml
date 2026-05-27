@@ -1,0 +1,10 @@
+services:
+  db:
+    container_name: movies
+    image: postgres:16
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: moviedb
+    ports:
+      - "5432:5432"

@@ -1,0 +1,57 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+
+model User {
+  id String @id @default(uuid())
+  email String @unique
+  username String @unique
+  password String
+  
+  
+  role Role @default(USER)
+  refreshToken String?
+
+  //Relacion
+  reviews Review[]
+
+  createdAt DateTime @default(now())
+  updateAt DateTime @updatedAt
+  
+  @@index([email])
+  @@map("usuarios")  // nombre de la tabla
+}
+
+enum MediaType {
+  MOVIE
+  SERIES
+}
+
+model Review {
+  id String @id @default(uuid())
+  rating Int
+  comment String
+  tmdbId     Int  //Identifico la pelicula/serie real en TMDB
+  mediaType  MediaType
+
+  //Relacion
+  userId String
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade )
+
+  createdAt DateTime @default(now())
+  updateAt DateTime @updatedAt
+
+  @@index([userId])
+  @@map("comentarios")
+}
