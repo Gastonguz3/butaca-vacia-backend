@@ -4,9 +4,9 @@ import {
   OnModuleDestroy,
   OnModuleInit,
 } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { PrismaPg } from '@prisma/adapter-pg';
-import { PrismaClient } from '@prisma/client/extension';
-import { ENV } from 'src/config';
+import { PrismaClient } from 'generated/prisma/client';
 
 @Injectable()
 export class PrismaService
@@ -15,13 +15,17 @@ export class PrismaService
 {
   private readonly logger = new Logger('Prisma');
 
-  constructor() {
-    const adapter = new PrismaPg({ connectionString: ENV.dbUrl });
+  constructor(private readonly configService: ConfigService) {
+    const dbUrl = configService.getOrThrow<string>('DATABASE_URL')
+    const adapter = new PrismaPg({
+      connectionString: dbUrl
+    });
+
+    const nodeEnv = configService.getOrThrow<string>('NODE_ENV');
 
     super({
       adapter,
-      log:
-        ENV.nodeEnv === 'development' ? ['query', 'error', 'warn'] : ['error'],
+      log: nodeEnv === 'development' ? ['query', 'error', 'warn'] : ['error'],
     });
   }
 
@@ -36,7 +40,9 @@ export class PrismaService
   }
 
   async cleanDatabase() {
-    if (ENV.nodeEnv === 'production') {
+    const nodeEnv = this.configService.getOrThrow<string>('NODE_ENV');
+    
+    if (nodeEnv === 'production') {
       this.logger.warn('Attempt to clean database in production');
       throw new Error('Cannot clean database in production');
     }

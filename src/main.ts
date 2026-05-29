@@ -1,11 +1,13 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { ENV } from './config';
 import { Logger, ValidationPipe } from '@nestjs/common';
+import cookieParser from 'cookie-parser';
+import { ConfigService } from '@nestjs/config';
 
 async function main() {
   const app = await NestFactory.create(AppModule);
   const logger = new Logger('App');
+  const configService = app.get(ConfigService);
 
   app.setGlobalPrefix('api');
 
@@ -20,8 +22,12 @@ async function main() {
     }),
   );
 
-  await app.listen(ENV.port);
-  logger.log(`App is running on port ${ENV.port}`);
+  app.use(cookieParser());
+
+  const port = configService.getOrThrow<number>('PORT');
+
+  await app.listen(port);
+  logger.log(`App is running on port ${port}`);
 }
 main().catch((error) => {
   Logger.error('Error starting server', error);
