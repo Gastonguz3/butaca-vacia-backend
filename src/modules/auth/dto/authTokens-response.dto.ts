@@ -1,7 +1,10 @@
 import { Role } from 'generated/prisma/enums';
 
-export class AuthResponseDto {
+export class AuthTokensResponseDto {
+
   accessToken: string;
+
+  refreshToken: string;
 
   user: {
     id: string;

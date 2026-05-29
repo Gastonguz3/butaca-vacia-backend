@@ -8,6 +8,6 @@ export const envSchema = Joi.object({
   NODE_ENV: Joi.string().valid('development', 'production').required(),
   JWT_SECRET: Joi.string().required(),
   JWT_REFRESH_SECRET: Joi.string().required(),
-  JWT_EXPIRES_IN : Joi.number().required(),
+  JWT_EXPIRES_IN : Joi.string().required(),
 })
 

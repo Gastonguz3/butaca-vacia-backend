@@ -1,6 +1,7 @@
 generator client {
   provider = "prisma-client"
   output   = "../generated/prisma"
+  moduleFormat = "cjs"  //Por defecto esta como: moduleFormat = "esm" 
 }
 
 datasource db {
@@ -27,7 +28,7 @@ model User {
   reviews Review[]
 
   createdAt DateTime @default(now())
-  updateAt DateTime @updatedAt
+  updatedAt DateTime @updatedAt
   
   @@index([email])
   @@map("usuarios")  // nombre de la tabla

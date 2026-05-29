@@ -3,13 +3,15 @@ import {
   Injectable,
   InternalServerErrorException,
   Logger,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { RegisterDto } from './dto/register.dto';
-import { AuthResponseDto } from './dto/auth-response.dto';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
+import { LoginDto } from './dto/login.dto';
+import { AuthTokensResponseDto } from './dto/authTokens-response.dto';
 
 @Injectable()
 export class AuthService {
@@ -22,12 +24,12 @@ export class AuthService {
     private configService: ConfigService,
   ) {}
 
-  async register(registerDto: RegisterDto): Promise<AuthResponseDto> {
+  async register(registerDto: RegisterDto): Promise<AuthTokensResponseDto> {
     const { email, password, username } = registerDto;
 
     //Verifico que el email y username no existan
     const existingUser = await this.prisma.user.findUnique({
-      where: {email},
+      where: { email },
     });
 
     if (existingUser) {
@@ -35,7 +37,7 @@ export class AuthService {
     }
 
     const existingUsername = await this.prisma.user.findUnique({
-      where: {username},
+      where: { username },
     });
 
     if (existingUsername) {
@@ -62,19 +64,66 @@ export class AuthService {
       await this.updateRefreshToken(newUser.id, tokens.refreshToken);
 
       return {
-      ...tokens,
-      user: newUser
-    };
-
+        ...tokens,
+        user: newUser,
+      };
     } catch (error) {
-      this.logger.log('error during user registration: ', error);
+      this.logger.error('error during user registration: ', error);
       throw new InternalServerErrorException(
         'An error occurred during registration',
       );
     }
   }
 
-  
+  async login(loginDto: LoginDto): Promise<AuthTokensResponseDto> {
+    const { email, password } = loginDto;
+
+    const user = await this.prisma.user.findUnique({
+      where: { email },
+    });
+
+    if (!user || !(await bcrypt.compare(password, user.password))) {
+      throw new UnauthorizedException('Invalid email or password');
+    }
+
+    const tokens = await this.generateTokens(user.id, user.email);
+    await this.updateRefreshToken(user.id, tokens.refreshToken);
+
+    return {
+      ...tokens,
+      user: {
+        id: user.id,
+        email: user.email,
+        username: user.username,
+        role: user.role,
+      },
+    };
+  }
+
+  async refresh(userId: string) : Promise<{ accessToken: string; refreshToken: string }> {
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+    });
+
+    if (!user) {
+      throw new UnauthorizedException('User not found');
+    }
+
+    const tokens = await this.generateTokens(user.id, user.email);
+
+    await this.updateRefreshToken(user.id, tokens.refreshToken);
+
+    return tokens;
+  }
+
+  async logout(userId: string): Promise<void> {
+    await this.prisma.user.update({
+      where: { id: userId },
+      data: { refreshToken: null },
+    });
+  }
+
+  //Metodo extas
   async generateTokens(
     userId: string,
     email: string,
@@ -82,11 +131,11 @@ export class AuthService {
     const payload = { sub: userId, email };
     const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.signAsync(payload, {
-        secret: this.configService.get('JWT_SECRET'),
+        secret: this.configService.getOrThrow('JWT_SECRET'),
         expiresIn: '15m',
       }),
       this.jwtService.signAsync(payload, {
-        secret: this.configService.get('JWT_REFRESH_SECRET'),
+        secret: this.configService.getOrThrow('JWT_REFRESH_SECRET'),
         expiresIn: '7d',
       }),
     ]);
@@ -107,5 +156,26 @@ export class AuthService {
       where: { id: userId },
       data: { refreshToken: hashedRefreshToken },
     });
+  }
+
+  async validateRefreshToken(userId: string, refreshToken: string) {
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+    });
+
+    if (!user || !user.refreshToken) {
+      throw new UnauthorizedException('Invalid refresh token');
+    }
+
+    const refreshTokenMatches = await bcrypt.compare(
+      refreshToken,
+      user.refreshToken,
+    );
+
+    if (!refreshTokenMatches) {
+      throw new UnauthorizedException('Invalid refresh token');
+    }
+
+    return user;
   }
 }
