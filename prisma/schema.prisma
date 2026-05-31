@@ -51,7 +51,7 @@ model Review {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade )
 
   createdAt DateTime @default(now())
-  updateAt DateTime @updatedAt
+  updatedAt DateTime @updatedAt
 
   @@index([userId])
   @@map("comentarios")
