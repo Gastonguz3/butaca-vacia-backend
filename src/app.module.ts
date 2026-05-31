@@ -6,6 +6,8 @@ import { AuthModule } from './modules/auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { envSchema } from './config';
 import { UsersModule } from './modules/users/users.module';
+import { MoviesModule } from './modules/movies/movies.module';
+import { TmdbModule } from './modules/tmdb/tmdb.module';
 
 @Module({
   imports: [
@@ -16,6 +18,8 @@ import { UsersModule } from './modules/users/users.module';
     PrismaModule,
     AuthModule,
     UsersModule,
+    MoviesModule,
+    TmdbModule,
   ],
   controllers: [AppController],
   providers: [AppService],
