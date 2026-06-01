@@ -4,9 +4,7 @@ import { SearchMoviesDto } from './dto/search-movies.dto';
 
 @Controller('movies')
 export class MoviesController {
-  constructor(
-    private readonly moviesService: MoviesService,
-  ) {}
+  constructor(private readonly moviesService: MoviesService) {}
 
   @Get('genres')
   async getGenres() {

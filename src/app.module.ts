@@ -8,6 +8,7 @@ import { envSchema } from './config';
 import { UsersModule } from './modules/users/users.module';
 import { MoviesModule } from './modules/movies/movies.module';
 import { TmdbModule } from './modules/tmdb/tmdb.module';
+import { SeriesModule } from './modules/series/series.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { TmdbModule } from './modules/tmdb/tmdb.module';
     UsersModule,
     MoviesModule,
     TmdbModule,
+    SeriesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
