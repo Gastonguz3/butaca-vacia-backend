@@ -53,6 +53,7 @@ model Review {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  @@unique([userId, tmdbId, mediaType]) //para que cada usuario deje un solo review por pelicula o serie
   @@index([userId])
   @@map("comentarios")
 }

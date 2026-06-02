@@ -9,6 +9,7 @@ import { UsersModule } from './modules/users/users.module';
 import { MoviesModule } from './modules/movies/movies.module';
 import { TmdbModule } from './modules/tmdb/tmdb.module';
 import { SeriesModule } from './modules/series/series.module';
+import { ReviewsModule } from './modules/reviews/reviews.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { SeriesModule } from './modules/series/series.module';
     MoviesModule,
     TmdbModule,
     SeriesModule,
+    ReviewsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Query } from '@nestjs/common';
+import { Controller, Get, Param, ParseIntPipe, Query } from '@nestjs/common';
 import { MoviesService } from './movies.service';
 import { SearchMoviesDto } from './dto/search-movies.dto';
 
@@ -17,12 +17,12 @@ export class MoviesController {
   }
 
   @Get(':id')
-  async getMovieDetails(@Param('id') movieId: number) {
+  async getMovieDetails(@Param('id', ParseIntPipe) movieId: number) {
     return this.moviesService.getMovieDetails(movieId);
   }
 
   @Get(':id/recommendations')
-  async getRecommendations(@Param('id') movieId: number) {
+  async getRecommendations(@Param('id', ParseIntPipe) movieId: number) {
     return this.moviesService.getRecommendations(movieId);
   }
 }
