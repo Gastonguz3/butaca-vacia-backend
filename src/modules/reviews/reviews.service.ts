@@ -9,34 +9,101 @@ import { UpdateReviewDto } from './dto/update-review.dto';
 import { CreateReviewDto } from './dto/create-review.dto';
 import { ReviewWithUserDto } from './dto/review-withUser.dto';
 import { ReviewResponseDto } from './dto/review-response.dto';
+import { PaginationDto } from 'src/common/dto/pagination.dto';
+import { PaginatedResponseDto } from 'src/common/dto/paginated-response.dto';
 
 @Injectable()
 export class ReviewsService {
   constructor(private readonly prisma: PrismaService) {}
 
+  async findMyReviews(
+    userId: string,
+    paginationDto: PaginationDto,
+  ): Promise<PaginatedResponseDto<ReviewResponseDto>> {
+    const { page = 1, limit = 10 } = paginationDto;
+
+    const skip = (page - 1) * limit;
+
+    const [reviews, total] = await Promise.all([
+      this.prisma.review.findMany({
+        where: { userId },
+        orderBy: { createdAt: 'desc' },
+        skip,
+        take: limit,
+      }),
+
+      this.prisma.review.count({
+        where: {
+          userId,
+        },
+      }),
+    ]);
+
+    return {
+      data: reviews,
+
+      meta: {
+        page,
+        limit,
+        total,
+        totalPages: Math.ceil(total / limit),
+      },
+    };
+  }
+
   async findByContent(
     tmdbId: number,
     mediaType: MediaType,
-  ): Promise<ReviewWithUserDto[]> {
-    return await this.prisma.review.findMany({
-      where: {
-        tmdbId,
-        mediaType,
-      },
-      include: {
-        user: {
-          select: {
-            username: true,
+    paginationDto: PaginationDto,
+  ): Promise<PaginatedResponseDto<ReviewWithUserDto>> {
+    const { page = 1, limit = 10 } = paginationDto;
+
+    const skip = (page - 1) * limit;
+
+    const [reviews, total] = await Promise.all([
+      this.prisma.review.findMany({
+        where: {
+          tmdbId,
+          mediaType,
+        },
+        include: {
+          user: {
+            select: {
+              username: true,
+            },
           },
         },
+        orderBy: {
+          createdAt: 'desc',
+        },
+        skip,
+        take: limit,
+      }),
+
+      this.prisma.review.count({
+        where: {
+          tmdbId,
+          mediaType,
+        },
+      }),
+    ]);
+
+    return {
+      data: reviews,
+
+      meta: {
+        page,
+        limit,
+        total,
+        totalPages: Math.ceil(total / limit),
       },
-      orderBy: {
-        createdAt: 'desc',
-      },
-    });
+    };
   }
 
-  async create(userId: string, createDto: CreateReviewDto) : Promise<ReviewWithUserDto> {
+  async create(
+    userId: string,
+    createDto: CreateReviewDto,
+  ): Promise<ReviewWithUserDto> {
     return await this.prisma.review.create({
       data: {
         userId,
@@ -56,18 +123,11 @@ export class ReviewsService {
     });
   }
 
-  async findMyReviews(userId: string) : Promise<ReviewResponseDto[]> {
-    return await this.prisma.review.findMany({
-      where: {
-        userId,
-      },
-      orderBy: {
-        createdAt: 'desc',
-      },
-    });
-  }
-
-  async update(reviewId: string, userId: string, reviewDto: UpdateReviewDto) : Promise<ReviewResponseDto> {
+  async update(
+    reviewId: string,
+    userId: string,
+    reviewDto: UpdateReviewDto,
+  ): Promise<ReviewResponseDto> {
     const review = await this.prisma.review.findUnique({
       where: {
         id: reviewId,
@@ -90,7 +150,7 @@ export class ReviewsService {
     });
   }
 
-  async remove(reviewId: string, userId: string) : Promise<{message: string}> {
+  async remove(reviewId: string, userId: string): Promise<{ message: string }> {
     const review = await this.prisma.review.findUnique({
       where: {
         id: reviewId,

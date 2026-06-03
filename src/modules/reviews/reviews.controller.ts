@@ -7,6 +7,7 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { ReviewsService } from './reviews.service';
@@ -17,18 +18,26 @@ import { UpdateReviewDto } from './dto/update-review.dto';
 import { MediaType } from 'generated/prisma/enums';
 import { ReviewWithUserDto } from './dto/review-withUser.dto';
 import { ReviewResponseDto } from './dto/review-response.dto';
+import { PaginationDto } from 'src/common/dto/pagination.dto';
+import { PaginatedResponseDto } from 'src/common/dto/paginated-response.dto';
 
 @UseGuards(JwtAuthGuard)
 @Controller('reviews')
 export class ReviewsController {
   constructor(private readonly reviewsService: ReviewsService) {}
 
+  @Get('me/list')
+  async findMyReviews(@GetUser('id') userId: string, @Query() paginationDto: PaginationDto) : Promise<PaginatedResponseDto<ReviewResponseDto>> {
+    return this.reviewsService.findMyReviews(userId, paginationDto);
+  }
+
   @Get(':mediaType/:tmdbId')
   async findByContent(
     @Param('mediaType') mediaType: MediaType,
     @Param('tmdbId', ParseIntPipe) tmdbId: number,
-  ): Promise<ReviewWithUserDto[]> {
-    return this.reviewsService.findByContent(tmdbId, mediaType);
+    @Query() paginationDto: PaginationDto
+  ): Promise<PaginatedResponseDto<ReviewWithUserDto>> {
+    return this.reviewsService.findByContent(tmdbId, mediaType, paginationDto);
   }
 
   @Post()
@@ -37,11 +46,6 @@ export class ReviewsController {
     @Body() createReviewDto: CreateReviewDto,
   ) : Promise<ReviewWithUserDto>  {
     return this.reviewsService.create(userId, createReviewDto);
-  }
-
-  @Get('me/list')
-  async findMyReviews(@GetUser('id') userId: string) : Promise<ReviewResponseDto[]> {
-    return this.reviewsService.findMyReviews(userId);
   }
 
   @Patch(':id')
