@@ -8,7 +8,7 @@ import {
 import { AuthService } from './auth.service';
 import { RegisterDto } from './dto/register.dto';
 import { AuthResponseDto } from './dto/auth-response.dto';
-import type { CookieOptions, Request, Response } from 'express';
+import type { CookieOptions, Response } from 'express';
 import { ConfigService } from '@nestjs/config';
 import { LoginDto } from './dto/login.dto';
 import { GetUser } from 'src/common/decorators/get-user.decorator';

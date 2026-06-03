@@ -24,6 +24,13 @@ async function main() {
 
   app.use(cookieParser());
 
+  app.enableCors({
+    origin: configService.getOrThrow<string>('FRONTEND_URL'),
+    credentials: true, // para las cookies y sesiones
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+  });
+
   const port = configService.getOrThrow<number>('PORT');
 
   await app.listen(port);
