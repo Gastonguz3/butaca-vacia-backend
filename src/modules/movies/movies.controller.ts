@@ -1,6 +1,6 @@
 import { Controller, Get, Param, ParseIntPipe, Query } from '@nestjs/common';
 import { MoviesService } from './movies.service';
-import { SearchMoviesDto } from './dto/search-movies.dto';
+import { DiscoverMovieDto } from './dto/discover-movies.dto';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
 import { PaginatedResponseDto } from 'src/common/dto/paginated-response.dto';
 
@@ -13,14 +13,16 @@ export class MoviesController {
     return this.moviesService.getGenres();
   }
 
-  @Get('search')
-  async searchMovies(@Query() searchMoviesDto: SearchMoviesDto): Promise<PaginatedResponseDto<any>> {
-    return this.moviesService.searchMovies(searchMoviesDto);
+  @Get('discover')
+  async discoverRandomMovie(@Query() searchMoviesDto: DiscoverMovieDto) {
+    return this.moviesService.discoverRandomMovie(searchMoviesDto);
   }
 
   @Get('popular')
-  async getPopularMovies(@Query() paginationDto: PaginationDto): Promise<PaginatedResponseDto<any>>{
-    return this.moviesService.getPopularMovies(paginationDto)
+  async getPopularMovies(
+    @Query() paginationDto: PaginationDto,
+  ): Promise<PaginatedResponseDto<any>> {
+    return this.moviesService.getPopularMovies(paginationDto);
   }
 
   @Get(':id')

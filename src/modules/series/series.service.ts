@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { TmdbService } from '../tmdb/tmdb.service';
-import { SearchSeriesDto } from './dto/search-series.dto';
+import { DiscoverSeriesDto } from './dto/discover-series.dto';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
 import { PaginatedResponseDto } from 'src/common/dto/paginated-response.dto';
 
@@ -12,12 +12,17 @@ export class SeriesService {
     return this.tmdbService.getSeriesGenres();
   }
 
-  async searchSeries(searchSeriesDto: SearchSeriesDto) : Promise<PaginatedResponseDto<any>> {
-    return this.tmdbService.discoverSeries(searchSeriesDto);
+  async discoverRandomSeries(searchSeriesDto: DiscoverSeriesDto) {
+    return this.tmdbService.discoverRandomSeries(searchSeriesDto);
   }
 
-  async getPopularSeries(paginationDto : PaginationDto) : Promise<PaginatedResponseDto<any>>{
-    return this.tmdbService.getPopularSeries(paginationDto.page!, paginationDto.limit!)
+  async getPopularSeries(
+    paginationDto: PaginationDto,
+  ): Promise<PaginatedResponseDto<any>> {
+    return this.tmdbService.getPopularSeries(
+      paginationDto.page!,
+      paginationDto.limit!,
+    );
   }
 
   async getSeriesDetails(seriesId: number) {

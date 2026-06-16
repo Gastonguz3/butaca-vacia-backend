@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { TmdbService } from '../tmdb/tmdb.service';
-import { SearchMoviesDto } from './dto/search-movies.dto';
+import { DiscoverMovieDto } from './dto/discover-movies.dto';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
 import { PaginatedResponseDto } from 'src/common/dto/paginated-response.dto';
 
@@ -12,12 +12,17 @@ export class MoviesService {
     return this.tmdbService.getMovieGenres();
   }
 
-  async searchMovies(searchMoviesDto: SearchMoviesDto) : Promise<PaginatedResponseDto<any>> {
-    return this.tmdbService.discoverMovies(searchMoviesDto);
+  async discoverRandomMovie(searchMoviesDto: DiscoverMovieDto) {
+    return this.tmdbService.discoverRandomMovie(searchMoviesDto);
   }
 
-  async getPopularMovies( paginationDto: PaginationDto) : Promise<PaginatedResponseDto<any>>{
-    return this.tmdbService.getPopularMovies(paginationDto.page!, paginationDto.limit!)
+  async getPopularMovies(
+    paginationDto: PaginationDto,
+  ): Promise<PaginatedResponseDto<any>> {
+    return this.tmdbService.getPopularMovies(
+      paginationDto.page!,
+      paginationDto.limit!,
+    );
   }
 
   async getMovieDetails(movieId: number) {

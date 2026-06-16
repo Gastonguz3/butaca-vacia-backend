@@ -1,7 +1,7 @@
 import { IsInt, IsOptional, Min } from 'class-validator';
-import { PaginationDto } from 'src/common/dto/pagination.dto';
 
-export class SearchMoviesDto extends PaginationDto {  //Para usar pagination en los metodos de search
+export class DiscoverMovieDto {
+  //Para usar pagination en los metodos de search
   @IsOptional()
   @IsInt()
   @Min(1)

@@ -1,6 +1,6 @@
 import { Controller, Get, Param, ParseIntPipe, Query } from '@nestjs/common';
 import { SeriesService } from './series.service';
-import { SearchSeriesDto } from './dto/search-series.dto';
+import { DiscoverSeriesDto } from './dto/discover-series.dto';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
 import { PaginatedResponseDto } from 'src/common/dto/paginated-response.dto';
 
@@ -13,14 +13,16 @@ export class SeriesController {
     return this.seriesService.getGenres();
   }
 
-  @Get('search')
-  async searchSeries(@Query() searchSeriesDto: SearchSeriesDto) : Promise<PaginatedResponseDto<any>> {
-    return this.seriesService.searchSeries(searchSeriesDto);
+  @Get('discover')
+  async discoverRandomSeries(@Query() searchSeriesDto: DiscoverSeriesDto) {
+    return this.seriesService.discoverRandomSeries(searchSeriesDto);
   }
 
   @Get('popular')
-  async getPopularSeries(paginationDto : PaginationDto) : Promise<PaginatedResponseDto<any>>{
-    return this.seriesService.getPopularSeries(paginationDto)
+  async getPopularSeries(
+    paginationDto: PaginationDto,
+  ): Promise<PaginatedResponseDto<any>> {
+    return this.seriesService.getPopularSeries(paginationDto);
   }
 
   @Get(':id')
