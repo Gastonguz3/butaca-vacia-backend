@@ -20,7 +20,7 @@ export class SeriesController {
 
   @Get('popular')
   async getPopularSeries(
-    paginationDto: PaginationDto,
+    @Query() paginationDto: PaginationDto,
   ): Promise<PaginatedResponseDto<any>> {
     return this.seriesService.getPopularSeries(paginationDto);
   }
