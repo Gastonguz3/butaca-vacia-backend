@@ -155,7 +155,7 @@ export class TmdbService {
         ),
       );
 
-      return response.data.results.slice(0, 10);
+      return response.data.results.slice(0, 6);
     } catch (error) {
       this.handleTmdbError(error);
     }
@@ -289,7 +289,7 @@ export class TmdbService {
         }),
       );
 
-      return response.data.results.slice(0, 10);
+      return response.data.results.slice(0, 6);
     } catch (error) {
       this.handleTmdbError(error);
     }
