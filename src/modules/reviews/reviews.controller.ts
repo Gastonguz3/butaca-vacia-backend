@@ -21,12 +21,12 @@ import { ReviewResponseDto } from './dto/review-response.dto';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
 import { PaginatedResponseDto } from 'src/common/dto/paginated-response.dto';
 
-@UseGuards(JwtAuthGuard)
 @Controller('reviews')
 export class ReviewsController {
   constructor(private readonly reviewsService: ReviewsService) {}
 
   @Get('me/list')
+  @UseGuards(JwtAuthGuard)
   async findMyReviews(@GetUser('id') userId: string, @Query() paginationDto: PaginationDto) : Promise<PaginatedResponseDto<ReviewResponseDto>> {
     return this.reviewsService.findMyReviews(userId, paginationDto);
   }
@@ -41,6 +41,7 @@ export class ReviewsController {
   }
 
   @Post()
+  @UseGuards(JwtAuthGuard)
   async create(
     @GetUser('id') userId: string,
     @Body() createReviewDto: CreateReviewDto,
@@ -49,6 +50,7 @@ export class ReviewsController {
   }
 
   @Patch(':id')
+  @UseGuards(JwtAuthGuard)
   async update(
     @Param('id') reviewId: string,
     @GetUser('id') userId: string,
@@ -58,6 +60,7 @@ export class ReviewsController {
   }
 
   @Delete(':id')
+  @UseGuards(JwtAuthGuard)
   async remove(@Param('id') reviewId: string, @GetUser('id') userId: string) : Promise<{message: string}> {
     return this.reviewsService.remove(reviewId, userId);
   }

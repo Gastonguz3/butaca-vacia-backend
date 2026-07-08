@@ -123,7 +123,7 @@ export class AuthService {
     });
   }
 
-  //Metodo extas
+  //Metodos extras
   async generateTokens(
     userId: string,
     email: string,
