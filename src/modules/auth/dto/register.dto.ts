@@ -1,20 +1,20 @@
 import { IsEmail, IsNotEmpty, IsString, Length, Matches } from 'class-validator';
 
 export class RegisterDto {
-  @IsEmail({}, { message: 'Provide a valid email address' })
-  @IsNotEmpty({ message: 'Email is required' })
+  @IsEmail({}, { message: 'Ingresá un correo electrónico válido.' })
+  @IsNotEmpty({ message: 'El correo electrónico es obligatorio.' })
   email: string;
 
   @IsString()
-  @IsNotEmpty({ message: 'Password is required' })
+  @IsNotEmpty({ message: 'La contraseña es obligatoria' })
   @Matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/, {
     message:
-      'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character',
+      'La contraseña debe contener al menos una letra mayúscula, una letra minúscula, un número y un carácter especial.',
   })
   password: string;
 
   @IsString()
-  @IsNotEmpty({message: 'Username is required'})
-  @Length(3, 25)
+  @IsNotEmpty({message: 'El nombre de usuario es obligatorio.'})
+  @Length(3, 25, {message: 'El nombre de usuario debe tener entre 3 y 25 caracteres.'})
   username: string;
 }

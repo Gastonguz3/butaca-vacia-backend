@@ -4,6 +4,10 @@ generator client {
   moduleFormat = "cjs"  //Por defecto esta como: moduleFormat = "esm" 
 }
 
+// Primero: docker compose up -d
+// Luego: pnpm dlx prisma migrate dev ->  Crear las tablas en la Base de Datos (Migración)
+// Luego: pnpm dlx prisma generate  -> Generar el Prisma Client (Si no se hizo automaticamente)
+
 datasource db {
   provider = "postgresql"
 }

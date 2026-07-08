@@ -33,7 +33,7 @@ export class AuthService {
     });
 
     if (existingUser) {
-      throw new ConflictException('User with this email already exists'); //error 409
+      throw new ConflictException('Ya existe una cuenta con este correo'); //error 409
     }
 
     const existingUsername = await this.prisma.user.findUnique({
@@ -41,7 +41,7 @@ export class AuthService {
     });
 
     if (existingUsername) {
-      throw new ConflictException('User with this username already exists');
+      throw new ConflictException('Este nombre de usuario ya está en uso.');
     }
 
     try {
@@ -70,7 +70,7 @@ export class AuthService {
     } catch (error) {
       this.logger.error('error during user registration: ', error);
       throw new InternalServerErrorException(
-        'An error occurred during registration',
+        'Ocurrió un error al crear la cuenta.',
       );
     }
   }
@@ -83,7 +83,7 @@ export class AuthService {
     });
 
     if (!user || !(await bcrypt.compare(password, user.password))) {
-      throw new UnauthorizedException('Invalid email or password');
+      throw new UnauthorizedException('El correo electrónico o la contraseña son incorrectos.');
     }
 
     const tokens = await this.generateTokens(user.id, user.email);
@@ -106,7 +106,7 @@ export class AuthService {
     });
 
     if (!user) {
-      throw new UnauthorizedException('User not found');
+      throw new UnauthorizedException('La sesión no es válida. Iniciá sesión nuevamente.');
     }
 
     const tokens = await this.generateTokens(user.id, user.email);
@@ -164,7 +164,7 @@ export class AuthService {
     });
 
     if (!user || !user.refreshToken) {
-      throw new UnauthorizedException('Invalid refresh token');
+      throw new UnauthorizedException('La sesión expiró. Iniciá sesión nuevamente.');
     }
 
     const refreshTokenMatches = await bcrypt.compare(
@@ -173,7 +173,7 @@ export class AuthService {
     );
 
     if (!refreshTokenMatches) {
-      throw new UnauthorizedException('Invalid refresh token');
+      throw new UnauthorizedException('La sesión expiró. Iniciá sesión nuevamente.');
     }
 
     return user;
