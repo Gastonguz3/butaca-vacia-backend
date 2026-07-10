@@ -10,7 +10,7 @@ export class ReviewWithUserDto {
   updatedAt: Date;
 
   user: {
-    id?: string;
+    id: string;
     username: string;
   };
 }
