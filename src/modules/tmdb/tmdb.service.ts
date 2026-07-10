@@ -5,6 +5,8 @@ import { firstValueFrom } from 'rxjs';
 import { DiscoverMovieDto } from '../movies/dto/discover-movies.dto';
 import { DiscoverSeriesDto } from '../series/dto/discover-series.dto';
 import { PaginatedResponseDto } from 'src/common/dto/paginated-response.dto';
+import { MovieDetailsDto } from '../movies/dto/movie-details.dto';
+import { SeriesDetailsDto } from '../series/dto/series-details.dto';
 
 @Injectable()
 export class TmdbService {
@@ -124,7 +126,7 @@ export class TmdbService {
     }
   }
 
-  async getMovieDetails(movieId: number) {
+  async getMovieDetails(movieId: number) : Promise<MovieDetailsDto> {
     try {
       const response = await firstValueFrom(
         this.httpService.get(`${this.baseUrl}/movie/${movieId}`, {
@@ -261,7 +263,7 @@ export class TmdbService {
     }
   }
 
-  async getSeriesDetails(seriesId: number) {
+  async getSeriesDetails(seriesId: number) : Promise<SeriesDetailsDto> {
     try {
       const response = await firstValueFrom(
         this.httpService.get(`${this.baseUrl}/tv/${seriesId}`, {

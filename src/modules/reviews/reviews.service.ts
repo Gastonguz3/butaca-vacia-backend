@@ -11,10 +11,14 @@ import { ReviewWithUserDto } from './dto/review-withUser.dto';
 import { ReviewResponseDto } from './dto/review-response.dto';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
 import { PaginatedResponseDto } from 'src/common/dto/paginated-response.dto';
+import { TmdbService } from '../tmdb/tmdb.service';
 
 @Injectable()
 export class ReviewsService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private tmbdService: TmdbService,
+  ) {}
 
   async findMyReviews(
     userId: string,
@@ -105,11 +109,22 @@ export class ReviewsService {
     userId: string,
     createDto: CreateReviewDto,
   ): Promise<ReviewWithUserDto> {
+    let title: string;
+
+    if (createDto.mediaType === MediaType.MOVIE) {
+      const details = await this.tmbdService.getMovieDetails(createDto.tmdbId);
+      title = details.title;
+    } else {
+      const details = await this.tmbdService.getSeriesDetails(createDto.tmdbId);
+      title = details.name;
+    }
+
     return await this.prisma.review.create({
       data: {
         userId,
         tmdbId: createDto.tmdbId,
         mediaType: createDto.mediaType,
+        titleShow: title,
         rating: createDto.rating,
         comment: createDto.comment,
       },

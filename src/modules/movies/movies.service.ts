@@ -3,6 +3,7 @@ import { TmdbService } from '../tmdb/tmdb.service';
 import { DiscoverMovieDto } from './dto/discover-movies.dto';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
 import { PaginatedResponseDto } from 'src/common/dto/paginated-response.dto';
+import { MovieDetailsDto } from './dto/movie-details.dto';
 
 @Injectable()
 export class MoviesService {
@@ -25,7 +26,7 @@ export class MoviesService {
     );
   }
 
-  async getMovieDetails(movieId: number) {
+  async getMovieDetails(movieId: number) : Promise<MovieDetailsDto> {
     return this.tmdbService.getMovieDetails(movieId);
   }
 

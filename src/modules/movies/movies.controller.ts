@@ -3,6 +3,7 @@ import { MoviesService } from './movies.service';
 import { DiscoverMovieDto } from './dto/discover-movies.dto';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
 import { PaginatedResponseDto } from 'src/common/dto/paginated-response.dto';
+import { MovieDetailsDto } from './dto/movie-details.dto';
 
 @Controller('movies')
 export class MoviesController {
@@ -26,7 +27,7 @@ export class MoviesController {
   }
 
   @Get(':id')
-  async getMovieDetails(@Param('id', ParseIntPipe) movieId: number) {
+  async getMovieDetails(@Param('id', ParseIntPipe) movieId: number): Promise<MovieDetailsDto> {
     return this.moviesService.getMovieDetails(movieId);
   }
 

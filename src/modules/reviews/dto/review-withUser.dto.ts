@@ -1,4 +1,4 @@
-import { MediaType } from "generated/prisma/enums";
+import { MediaType } from 'generated/prisma/enums';
 
 export class ReviewWithUserDto {
   id: string;
@@ -6,6 +6,7 @@ export class ReviewWithUserDto {
   comment: string;
   tmdbId: number;
   mediaType: MediaType;
+  titleShow: string;
   createdAt: Date;
   updatedAt: Date;
 

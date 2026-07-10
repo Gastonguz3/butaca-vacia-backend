@@ -3,6 +3,7 @@ import { TmdbService } from '../tmdb/tmdb.service';
 import { DiscoverSeriesDto } from './dto/discover-series.dto';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
 import { PaginatedResponseDto } from 'src/common/dto/paginated-response.dto';
+import { SeriesDetailsDto } from './dto/series-details.dto';
 
 @Injectable()
 export class SeriesService {
@@ -25,7 +26,7 @@ export class SeriesService {
     );
   }
 
-  async getSeriesDetails(seriesId: number) {
+  async getSeriesDetails(seriesId: number) : Promise<SeriesDetailsDto>  {
     return this.tmdbService.getSeriesDetails(seriesId);
   }
 

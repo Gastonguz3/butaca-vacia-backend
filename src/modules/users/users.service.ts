@@ -139,7 +139,7 @@ export class UsersService {
     });
 
     if (!user) {
-      throw new NotFoundException('User not found');
+      throw new NotFoundException('El usuario no existe');
     }
 
     const isPasswordValid = await bcrypt.compare(
@@ -148,13 +148,13 @@ export class UsersService {
     );
 
     if (!isPasswordValid) {
-      throw new UnauthorizedException('Current password is incorrect');
+      throw new UnauthorizedException('La contraseña actual es incorrecta');
     }
 
     const isSamePassword = await bcrypt.compare(newPassword, user.password);
     if (isSamePassword) {
       throw new BadRequestException(
-        'New password must be different from the current password',
+        'La nueva contraseña debe ser distinta a la antigua',
       );
     }
 
@@ -165,7 +165,7 @@ export class UsersService {
       data: { password: hashedNewPassword },
     });
 
-    return { message: 'Password changed successfully' };
+    return { message: 'La contraseña se cambio correctamente' };
   }
 
   async remove(userId: string): Promise<{ message: string }> {

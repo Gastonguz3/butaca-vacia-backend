@@ -3,6 +3,7 @@ import { SeriesService } from './series.service';
 import { DiscoverSeriesDto } from './dto/discover-series.dto';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
 import { PaginatedResponseDto } from 'src/common/dto/paginated-response.dto';
+import { SeriesDetailsDto } from './dto/series-details.dto';
 
 @Controller('series')
 export class SeriesController {
@@ -26,7 +27,7 @@ export class SeriesController {
   }
 
   @Get(':id')
-  async getSerieDetails(@Param('id', ParseIntPipe) seriesId: number) {
+  async getSerieDetails(@Param('id', ParseIntPipe) seriesId: number) : Promise<SeriesDetailsDto> {
     return this.seriesService.getSeriesDetails(seriesId);
   }
 

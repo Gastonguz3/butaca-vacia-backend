@@ -49,6 +49,7 @@ model Review {
   comment String
   tmdbId     Int  //Identifico la pelicula/serie real en TMDB
   mediaType  MediaType
+  titleShow String
 
   //Relacion
   userId String
