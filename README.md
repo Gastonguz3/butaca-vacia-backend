@@ -1,98 +1,175 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Butaca Vacia - Backend
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+API RESTful desarrollado con **NestJS**, **TypeScript**, **PostgreSQL** y **Prisma ORM** para una plataforma de recomendación de películas y series.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+El proyecto permite a los usuarios registrarse, iniciar sesión mediante autenticación JWT, publicar comentarios y puntuaciones sobre películas y series obtenidas desde la [API de TMDB](https://developer.themoviedb.org/reference/getting-started).
 
-## Description
+Este repositorio fue desarrollado como proyecto personal para profundizar conocimientos en desarrollo backend utilizando buenas prácticas, arquitectura modular y autenticación segura.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+Para ver la **pagina** [ingrese aca]()
 
-## Project setup
+Para ver el **codigo del frontend** [ingrese aca](https://github.com/Gastonguz3/butaca-vacia-frontend)
 
-```bash
-$ pnpm install
-```
 
-## Compile and run the project
+## Tecnologías
 
-```bash
-# development
-$ pnpm run start
+- NestJS 
+- TypeScript
+- PostgreSQL
+- Prisma ORM
+- JWT Authentication
+- Passport
+- Bcrypt
+- Class Validator
+- Joi
+- Cookie Parser
 
-# watch mode
-$ pnpm run start:dev
+## Funcionalidades
 
-# production mode
-$ pnpm run start:prod
-```
+- Gestión completa de usuarios (registro, inicio de sesión, perfil, cambio de contraseña y eliminación de cuenta).
+- Sistema de autenticación seguro utilizando JWT, Refresh Tokens y cookies HttpOnly.
+- Los usuarios autenticados pueden crear comentarios, calificarlos, editarlos y eliminarlos (cada usuario solo puede publicar un comentario por película o serie.)
+- CRUD de comentarios y puntuaciones sobre películas y series.
+- Integración con la API de TMDB para consultar contenido y recomendaciones.
+- Validación de datos, paginación y configuración mediante variables de entorno.
 
-## Run tests
+## Autenticación
 
-```bash
-# unit tests
-$ pnpm run test
+El sistema implementa autenticación basada en JWT utilizando dos tokens.
 
-# e2e tests
-$ pnpm run test:e2e
+### Access Token
 
-# test coverage
-$ pnpm run test:cov
-```
+- Duración corta (15 minutos)
+- Enviado mediante Authorization Bearer Token
 
-## Deployment
+### Refresh Token
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+- Duración de 7 días
+- Almacenado en cookie HttpOnly
+- Hasheado antes de guardarse en la base de datos
+- Utilizado para generar nuevos Access Tokens
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+De esta manera, evito almacenar tokens sensibles en el navegador y mejora la seguridad.
+
+## Instalación
+
+### 1. Clonar el repositorio
 
 ```bash
-$ pnpm install -g @nestjs/mau
-$ mau deploy
+git clone https://github.com/Gastonguz3/butaca-vacia-backend
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+### 2. Instalar dependencias
 
-## Resources
 
-Check out a few resources that may come in handy when working with NestJS:
+```bash
+pnpm install
+```
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+---
 
-## Support
+### 3. Configurar variables de entorno
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+Crear un archivo `.env`.
 
-## Stay in touch
+Ejemplo:
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+```env
+PORT=4000
+DATABASE_URL=
 
-## License
+JWT_SECRET=
+JWT_REFRESH_SECRET=
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+FRONTEND_URL=http://localhost:3000
+
+NODE_ENV=development
+
+TMDB_API_KEY=
+TMDB_BASE_URL=https://api.themoviedb.org/3
+```
+
+### 4. Levantar Contenedor de Docker con PostgreSQL
+
+Este paso es opcional, es solo si queres usar el docker-compose que contiene el proyecto para levantar la base de datos
+
+```bash
+docker compose up -d
+```
+
+### 5. Ejecutar migraciones
+
+```bash
+pnpm dlx prisma migrate dev
+```
+
+### 6. Generar Prisma Client
+
+```bash
+pnpm dlx prisma generate
+```
+
+### 7. Ejecutar el proyecto
+
+```bash
+pnpm start:dev
+```
+## Endpoints principales
+
+### Auth
+
+| Método | Endpoint | Descripción |
+|:------:|:---------|:------------|
+| POST | `/api/auth/register` | Registrar un nuevo usuario |
+| POST | `/api/auth/login` | Iniciar sesión |
+| POST | `/api/auth/refresh` | Renovar el Access Token |
+| POST | `/api/auth/logout` | Cerrar sesión |
+
+---
+
+### Users
+
+| Método | Endpoint | Descripción |
+|:------:|:---------|:------------|
+| GET | `/api/users/me` | Obtener el perfil del usuario autenticado |
+| PATCH | `/api/users/me` | Actualizar la información del perfil |
+| PATCH | `/api/users/me/password` | Cambiar la contraseña |
+| DELETE | `/api/users/me` | Eliminar la cuenta |
+
+---
+
+### Reviews
+
+| Método | Endpoint | Descripción |
+|:------:|:---------|:------------|
+| GET | `/api/reviews/me/list` | Obtener los comentarios del usuario autenticado |
+| GET | `/api/reviews/:mediaType/:tmdbId` | Obtener los comentarios de una película o serie |
+| POST | `/api/reviews` | Crear un comentario |
+| PATCH | `/api/reviews/:id` | Editar un comentario |
+| DELETE | `/api/reviews/:id` | Eliminar un comentario |
+
+---
+
+### Movies
+
+| Método | Endpoint | Descripción |
+|:------:|:---------|:------------|
+| GET | `/api/movies/genres` | Obtener la lista de géneros |
+| GET | `/api/movies/discover` | Obtener una película en base a los filtros |
+| GET | `/api/movies/popular` | Obtener películas populares |
+| GET | `/api/movies/:id` | Obtener los detalles de una película |
+| GET | `/api/movies/:id/recommendations` | Obtener recomendaciones relacionadas |
+
+---
+
+### Series
+
+| Método | Endpoint | Descripción |
+|:------:|:---------|:------------|
+| GET | `/api/series/genres` | Obtener la lista de géneros |
+| GET | `/api/series/discover` | Obtener una serie en base a los filtros |
+| GET | `/api/series/popular` | Obtener series populares |
+| GET | `/api/series/:id` | Obtener los detalles de una serie |
+| GET | `/api/series/:id/recommendations` | Obtener recomendaciones relacionadas |
+
+#### Autor: Gaston Guzman [linKedIn](https://www.linkedin.com/in/gaston-guzman-192730352/).

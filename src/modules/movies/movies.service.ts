@@ -4,22 +4,24 @@ import { DiscoverMovieDto } from './dto/discover-movies.dto';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
 import { PaginatedResponseDto } from 'src/common/dto/paginated-response.dto';
 import { MovieDetailsDto } from './dto/movie-details.dto';
+import { Genre } from 'src/common/dto/genre';
+import { MovieDto } from './dto/movie.dto';
 
 @Injectable()
 export class MoviesService {
   constructor(private readonly tmdbService: TmdbService) {}
 
-  async getGenres() {
+  async getGenres() : Promise<Genre[]> {
     return this.tmdbService.getMovieGenres();
   }
 
-  async discoverRandomMovie(searchMoviesDto: DiscoverMovieDto) {
+  async discoverRandomMovie(searchMoviesDto: DiscoverMovieDto) : Promise<MovieDto>  {
     return this.tmdbService.discoverRandomMovie(searchMoviesDto);
   }
 
   async getPopularMovies(
     paginationDto: PaginationDto,
-  ): Promise<PaginatedResponseDto<any>> {
+  ): Promise<PaginatedResponseDto<MovieDto>> {
     return this.tmdbService.getPopularMovies(
       paginationDto.page!,
       paginationDto.limit!,
@@ -30,7 +32,7 @@ export class MoviesService {
     return this.tmdbService.getMovieDetails(movieId);
   }
 
-  async getRecommendations(movieId: number) {
+  async getRecommendations(movieId: number) : Promise<MovieDto[]> {
     return this.tmdbService.getMovieRecommendations(movieId);
   }
 }

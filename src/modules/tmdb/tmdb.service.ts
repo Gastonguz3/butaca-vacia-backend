@@ -7,6 +7,9 @@ import { DiscoverSeriesDto } from '../series/dto/discover-series.dto';
 import { PaginatedResponseDto } from 'src/common/dto/paginated-response.dto';
 import { MovieDetailsDto } from '../movies/dto/movie-details.dto';
 import { SeriesDetailsDto } from '../series/dto/series-details.dto';
+import { Genre } from 'src/common/dto/genre';
+import { MovieDto } from '../movies/dto/movie.dto';
+import { SeriesDto } from '../series/dto/series.dto';
 
 @Injectable()
 export class TmdbService {
@@ -32,7 +35,7 @@ export class TmdbService {
 
   //Movies
 
-  async getMovieGenres() {
+  async getMovieGenres() : Promise<Genre[]> {
     try {
       //Lo convierto a promesa
       const response = await firstValueFrom(
@@ -51,7 +54,7 @@ export class TmdbService {
     }
   }
 
-  async discoverRandomMovie(filters: DiscoverMovieDto) {
+  async discoverRandomMovie(filters: DiscoverMovieDto) : Promise<MovieDto>  {
     try {
       const { genre } = filters;
 
@@ -99,7 +102,7 @@ export class TmdbService {
   async getPopularMovies(
     page: number,
     limit: number,
-  ): Promise<PaginatedResponseDto<any>> {
+  ): Promise<PaginatedResponseDto<MovieDto>> {
     try {
       const response = await firstValueFrom(
         this.httpService.get(`${this.baseUrl}/movie/popular`, {
@@ -143,7 +146,7 @@ export class TmdbService {
     }
   }
 
-  async getMovieRecommendations(movieId: number) {
+  async getMovieRecommendations(movieId: number) : Promise<MovieDto[]> {
     try {
       const response = await firstValueFrom(
         this.httpService.get(
@@ -165,7 +168,7 @@ export class TmdbService {
 
   //Series
 
-  async getSeriesGenres() {
+  async getSeriesGenres() : Promise<Genre[]>  {
     try {
       const response = await firstValueFrom(
         //Lo convierto a promesa
@@ -187,7 +190,7 @@ export class TmdbService {
     }
   }
 
-  async discoverRandomSeries(filters: DiscoverSeriesDto) {
+  async discoverRandomSeries(filters: DiscoverSeriesDto): Promise<SeriesDto>  {
     try {
       const { genre } = filters;
 
@@ -235,7 +238,7 @@ export class TmdbService {
   async getPopularSeries(
     page: number,
     limit: number,
-  ): Promise<PaginatedResponseDto<any>> {
+  ): Promise<PaginatedResponseDto<SeriesDto>> {
     try {
       const response = await firstValueFrom(
         this.httpService.get(`${this.baseUrl}/tv/popular`, {
@@ -280,7 +283,7 @@ export class TmdbService {
     }
   }
 
-  async getSeriesRecommendations(seriesId: number) {
+  async getSeriesRecommendations(seriesId: number): Promise<SeriesDto[]>  {
     try {
       const response = await firstValueFrom(
         this.httpService.get(`${this.baseUrl}/tv/${seriesId}/recommendations`, {

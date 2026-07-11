@@ -4,25 +4,27 @@ import { DiscoverMovieDto } from './dto/discover-movies.dto';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
 import { PaginatedResponseDto } from 'src/common/dto/paginated-response.dto';
 import { MovieDetailsDto } from './dto/movie-details.dto';
+import { Genre } from 'src/common/dto/genre';
+import { MovieDto } from './dto/movie.dto';
 
 @Controller('movies')
 export class MoviesController {
   constructor(private readonly moviesService: MoviesService) {}
 
   @Get('genres')
-  async getGenres() {
+  async getGenres() : Promise<Genre[]> {
     return this.moviesService.getGenres();
   }
 
   @Get('discover')
-  async discoverRandomMovie(@Query() searchMoviesDto: DiscoverMovieDto) {
+  async discoverRandomMovie(@Query() searchMoviesDto: DiscoverMovieDto) : Promise<MovieDto> {
     return this.moviesService.discoverRandomMovie(searchMoviesDto);
   }
 
   @Get('popular')
   async getPopularMovies(
     @Query() paginationDto: PaginationDto,
-  ): Promise<PaginatedResponseDto<any>> {
+  ): Promise<PaginatedResponseDto<MovieDto>> {
     return this.moviesService.getPopularMovies(paginationDto);
   }
 
@@ -32,7 +34,7 @@ export class MoviesController {
   }
 
   @Get(':id/recommendations')
-  async getRecommendations(@Param('id', ParseIntPipe) movieId: number) {
+  async getRecommendations(@Param('id', ParseIntPipe) movieId: number): Promise<MovieDto[]>  {
     return this.moviesService.getRecommendations(movieId);
   }
 }
