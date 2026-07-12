@@ -125,8 +125,6 @@ pnpm start:dev
 | POST | `/api/auth/refresh` | Renovar el Access Token |
 | POST | `/api/auth/logout` | Cerrar sesión |
 
----
-
 ### Users
 
 | Método | Endpoint | Descripción |
@@ -135,8 +133,6 @@ pnpm start:dev
 | PATCH | `/api/users/me` | Actualizar la información del perfil |
 | PATCH | `/api/users/me/password` | Cambiar la contraseña |
 | DELETE | `/api/users/me` | Eliminar la cuenta |
-
----
 
 ### Reviews
 
@@ -148,8 +144,6 @@ pnpm start:dev
 | PATCH | `/api/reviews/:id` | Editar un comentario |
 | DELETE | `/api/reviews/:id` | Eliminar un comentario |
 
----
-
 ### Movies
 
 | Método | Endpoint | Descripción |
@@ -159,8 +153,6 @@ pnpm start:dev
 | GET | `/api/movies/popular` | Obtener películas populares |
 | GET | `/api/movies/:id` | Obtener los detalles de una película |
 | GET | `/api/movies/:id/recommendations` | Obtener recomendaciones relacionadas |
-
----
 
 ### Series
 
