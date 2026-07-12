@@ -1,6 +1,6 @@
 # Butaca Vacia - Backend
 
-API RESTful desarrollado con **NestJS**, **TypeScript**, **PostgreSQL** y **Prisma ORM** para una plataforma de recomendación de películas y series.
+API RESTful desarrollado con **NestJS**, **TypeScript**, **PostgreSQL** y **Prisma ORM** para una plataforma de recomendación de películas y series. La API fue desplegada en Render y la base de datos en Neon.
 
 El proyecto permite a los usuarios registrarse, iniciar sesión mediante autenticación JWT, publicar comentarios y puntuaciones sobre películas y series obtenidas desde la [API de TMDB](https://developer.themoviedb.org/reference/getting-started).
 
