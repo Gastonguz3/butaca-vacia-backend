@@ -6,7 +6,7 @@ El proyecto permite a los usuarios registrarse, iniciar sesión mediante autenti
 
 Este repositorio fue desarrollado como proyecto personal para profundizar conocimientos en desarrollo backend utilizando buenas prácticas, arquitectura modular y autenticación segura.
 
-Para ver la **pagina** [ingrese aca]()
+Para ver la **pagina** [ingrese aca](https://butaca-vacia.vercel.app/)
 
 Para ver el **codigo del frontend** [ingrese aca](https://github.com/Gastonguz3/butaca-vacia-frontend)
 
